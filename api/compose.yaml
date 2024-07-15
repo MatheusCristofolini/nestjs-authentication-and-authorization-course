@@ -1,0 +1,15 @@
+services:
+  db:
+    container_name: nestjs-authentication-and-authorization-course-db
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: admin
+  redis:
+    container_name: nestjs-authentication-and-authorization-course-redis
+    image: redis
+    restart: always
+    ports:
+      - "6379:6379"
