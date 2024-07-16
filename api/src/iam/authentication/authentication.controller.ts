@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { AuthenticationService } from './authentication.service';
-import { Auth } from './decorators/auth.decorators';
+import { Auth } from './decorators/auth.decorator';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { SingInDto } from './dto/sing-in.dto';
 import { SingUpDto } from './dto/sing-up.dto';

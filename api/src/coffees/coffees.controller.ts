@@ -7,7 +7,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { Auth } from 'src/iam/authentication/decorators/auth.decorators';
+import { Auth } from 'src/iam/authentication/decorators/auth.decorator';
 import { AuthType } from 'src/iam/authentication/enums/auth-type.enum';
 import { Policies } from 'src/iam/authorization/decorators/policies.decorator';
 import { Roles } from 'src/iam/authorization/decorators/roles.decorator';
