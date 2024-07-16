@@ -12,7 +12,7 @@ import { Repository } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import jwtConfig from '../config/jwt.config';
 import { HashingService } from '../hashing/hashing.service';
-import { ActiveUserData } from '../hashing/interfaces/active-user-data.interface';
+import { ActiveUserData } from '../interfaces/active-user-data.interface';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { SingInDto } from './dto/sing-in.dto';
 import { SingUpDto } from './dto/sing-up.dto';
@@ -72,7 +72,11 @@ export class AuthenticationService {
       this.singToken<Partial<ActiveUserData>>(
         user.id,
         this.jwtConfiguration.accessTokenTtl,
-        { email: user.email },
+        {
+          email: user.email,
+          role: user.role,
+          permissions: user.permissions,
+        },
       ),
       this.singToken(user.id, this.jwtConfiguration.refreshTokenTtl, {
         refreshTokenId,
