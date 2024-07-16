@@ -16,6 +16,7 @@ import { ActiveUserData } from '../interfaces/active-user-data.interface';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { SingInDto } from './dto/sing-in.dto';
 import { SingUpDto } from './dto/sing-up.dto';
+import { OtpAuthenticationService } from './otp-authentication.service';
 import {
   InvalidatedRefreshTokenError,
   RefreshTokenIdsStorage,
@@ -29,7 +30,8 @@ export class AuthenticationService {
     private readonly jwtService: JwtService,
     @Inject(jwtConfig.KEY)
     private readonly jwtConfiguration: ConfigType<typeof jwtConfig>,
-    private refreshTokenIdsStorage: RefreshTokenIdsStorage,
+    private readonly refreshTokenIdsStorage: RefreshTokenIdsStorage,
+    private readonly otpAuthService: OtpAuthenticationService,
   ) {}
 
   async singUp(singUpDto: SingUpDto) {
@@ -62,7 +64,15 @@ export class AuthenticationService {
     if (!isEqual) {
       throw new UnauthorizedException('Password does not match');
     }
-
+    if (user.isTfaEnabled) {
+      const isValid = this.otpAuthService.verifyCode(
+        singInDto.tfaCode,
+        user.tfaSecret,
+      );
+      if (!isValid) {
+        throw new UnauthorizedException('Invalid 2FA code');
+      }
+    }
     return await this.generateTokens(user);
   }
 
